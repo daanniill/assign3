@@ -1,0 +1,8 @@
+Tic-Tac-Toe Log
+
+I begin this project with defining and exporting a component called Square which simply creates a button with an X in the middle.
+This component is exported paired with the default keyword which tells other files that this the main function in this file.
+
+Now I take the button inside the component and wrap it in fragments since I want this component to return multiple lines of code not just one.
+Inside these fragments, I take and duplicate the button nine times to represent the amount of tiles in a tic-tac-toe board so now I have nine buttons on the screen.
+
