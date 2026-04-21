@@ -1,8 +1,38 @@
 Tic-Tac-Toe Log
 
+Setup:
+
 I begin this project with defining and exporting a component called Square which simply creates a button with an X in the middle.
 This component is exported paired with the default keyword which tells other files that this the main function in this file.
 
 Now I take the button inside the component and wrap it in fragments since I want this component to return multiple lines of code not just one.
 Inside these fragments, I take and duplicate the button nine times to represent the amount of tiles in a tic-tac-toe board so now I have nine buttons on the screen.
+I changed the text inside the board buttons to numbers to represent board coordinates
 
+Created a square component instead of copy and pasting a button nine times. This component is going to allow me to update each button based on input.
+The Square component now takes a value to represent the number it is supposed to display. I pass in the number through value attribute in the Board component.
+
+Making everything interactive:
+I begin with adding a function inside the Square component that logs to the console 'clicked' everytime the function is called. Now I reworked the jsx the component returns to call this function everytime the button is clicked.
+Now I begin implementing states in my code develop a sort of memory for the component so we can remember things when the component is clicked.
+We use this state to make square components display an X when clicked.
+I can also use React Developer Tools to check the props and states of my components.
+
+Lifting state up:
+We begin with working out and implementing the game logic for tictactoe. Rather than having each square remember and process game logic, it is best to implement this logic in the board component where the component can tell each Square what to display by passing a prop.
+Thus, we must declare a shared state in the parent board component through which we can pass that state to the children (aka square components) via props. This process is called Lifting State.
+So, we rework the Square component and remove the state functionality from the component and move it into board.
+We also take out the function that handles clicks and move into board component and adapt it to the state functionality in the board component.
+Now each time a sqaure component is clicked, the new handleClick function in the board component will create a copy of the squares array used in the state and will add an X to the square which was clicked, based on index. This also causes a re-rendering of the squares array and causes an X to appear on the board.
+But there is an issue with the above statement. We do not want to re-render our entire board everytime a square is clicked and that is because the handleClick function calls are a part of rendering the board component. We fix this by using an arrow function to say after a square is clicked, we run the handleClick function.
+
+Turn Logic:
+To set up turn logic, we will use a state to track which players turn it is. Since there are only two players, we can keep track of whose turn it is through a boolean.
+We modify the handleClick function to now work with this new state, so each time a square is clicked, the function checks whose turn it is, and changes the square according to th eplayer who is playing. It also modifies the turn state to make it so the next player is the one that hasn't played this round.
+But the problem that happens now is that we can click the same square multiple times even though it is already marked. We implement a small state check in the beginning of the handleClick function to see whether the clicked sqaure has already been clicked.
+Now we have a fully functional tic-tac-toe board!
+
+Game End Logic:
+Now that our board is functional, we must develop a way to end the game whether it be through a win, a loss, or a tie. We will develop a seperate function that does this computation for us.
+Our calculateWinner function defines a set of coordinates which correspond to the win condition. So everytime a square is clicked the calculateWinner function runs through the squares array and checks it with the defined set of coordinates and returns the mark of the player who may have a win currently present on the board. If there are no wins present on the board, then the function returns null.
+We also define some code to display the status of the game after each turn. 
