@@ -15,5 +15,21 @@ Actually with this previous statement, I need to use a map function paired with 
 I now use this new variable to create a new variable that checks the length of this array and now based on the length of this array (represents amount of marks on board) I can decide what is the game logic that is allowed.
 If there are less than three marks on the board, I allow the player to place their new mark anywhere where it is open on the board.
 Otherwise, if there are three marks on this board, I check whether any of the marks are adjacent to the index of my new mark that the player is trying to place. I do this by using the .some function to go through the player indices array and check if at least one mark is adjacent to my new one. I use this as a conditional statement.
-Now that I checked that there is at least one adjacent mark, I use a for loop to loop throught the player indices again and find the first adjacent mark to replace.
+Now that I checked that there is at least one adjacent mark, I use a for loop to loop through the player indices again and find the first adjacent mark to replace.
 
+Realizing my mistake:
+Turns out I have to make actually give the player the option of which mark to move so I have to rework everything slightly.
+Basically, I'm going to split my handleClick function into two phases: the placing phase and moving phase.
+I'm first going to check whehter there are less than three marks on the board for the current player.
+Otherwise if there is three marks on the board, I'm going to see which one the player has clicked. 
+Otherwise we don't do anything and let the player try again.
+For this part, I need to implement the use of a new state to process second moves.
+I'm going to keep track of which square is selected to move and change its state based on that.
+So I begin with checking whether there are three tiles on the board for the current player. If there is, now I check wether the tile has already been selected or not. If it has not been selected and the tile has the current players mark on it, then we change the selectedSquare state for that tile and return so the player can make his second move of where to place the new mark. If the tile has already been selected, we then continue through the rest of the phase.
+Now I implement the second part of the move phase, checking whether the second click is actually a valid move spot. We now check whether the new tile clicked is empty and adjacent to the previously clicked tile as stored in the selectedTile state.
+I just realized I also had a bug here, where the second phase didn't reset if an invalid move was inputed on the second part of the moving phase, so I fixed it by changing the selectedSquare state to null to address the autograder requirements. 
+But if the the second part of the move phase is valid, we erase the old player mark and place a new one in the newly selected square and reset the selectedSquare state to null for the next time the player makes a move in the move phase.
+
+Addressing the final rule of the new game:
+Lastly, I forgot to implement the center win condition mechanic from earlier because I thought it was a bit of an add on after I have finished the main game mechanics.
+I implement this mechanic after the player finished the second part of the move phase by checking if they have a piece on the center square and their new move is not moving from the center square and calculating whether a win is not possible with their new move. 

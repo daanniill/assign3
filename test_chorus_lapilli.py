@@ -155,6 +155,27 @@ class TestChorusLapilli(unittest.TestCase):
         tiles[0].click()
         self.assertTileIs(tiles[0], self.SYMBOL_X)
 
+    def test_second_move_adds_o(self):
+        '''Check if the second move places an O in another tile.'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        tiles[0].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        tiles[1].click()
+        self.assertTileIs(tiles[1], self.SYMBOL_O)
+
+    def test_board_X(self):
+        '''Check if clicking the botom-right button adds an X.'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[9], self.SYMBOL_BLANK)
+        tiles[0].click()
+        self.assertTileIs(tiles[9], self.SYMBOL_X)
+    
+    def test_board_X_2(self):
+        '''Check if clicking the bottom-left button adds an X.'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+        tiles[0].click()
+        self.assertTileIs(tiles[6], self.SYMBOL_X)
 
 # ================= [DO NOT MAKE ANY CHANGES BELOW THIS LINE] =================
 

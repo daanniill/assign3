@@ -18,9 +18,10 @@ function Square({ value, onSquareClick }) {
 export default function Board() {
   const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [selectedSquare, setSelectedSquare] = useState(null);
 
   function handleClick(i) {
-    if (squares[i] || calculateWinner(squares)) {
+    if (calculateWinner(squares)) {
       return;
     }
     const nextSquares = squares.slice();
@@ -29,17 +30,29 @@ export default function Board() {
         .map((square, index) => square === 'X' ? index : null)
         .filter(index => index !== null);
       const xCount = xIndices.length;
-      if (xCount < 3) {
+      if (xCount < 3 && !squares[i]) {
         nextSquares[i] = "X";
       }
-      else if (xIndices.some(index => isAdjacent(index, i))){
-        for (const old of xIndices) {
-          if (isAdjacent(old, i)) {
-            nextSquares[old] = null;
-            nextSquares[i] = "X"
-            break;
+      else if (xCount === 3){
+        if (selectedSquare === null) {
+          if (squares[i] === 'X') {
+            setSelectedSquare(i)
           }
+          return
         }
+
+        if (squares[i] !== null || !isAdjacent(selectedSquare, i)) {
+          setSelectedSquare(null)
+          return
+        }
+        nextSquares[selectedSquare] = null;
+        nextSquares[i] = 'X';
+        if (squares[4] === 'X' && selectedSquare !== 4 && calculateWinner(nextSquares) !== 'X') {
+          setSelectedSquare(null)
+          return
+        }
+
+        setSelectedSquare(null)
       }
       else {
         return;
@@ -49,17 +62,29 @@ export default function Board() {
         .map((square, index) => square === 'O' ? index : null)
         .filter(index => index !== null);
       const yCount = yIndices.length;
-      if (yCount < 3) {
+      if (yCount < 3 && !squares[i]) {
         nextSquares[i] = "O";
       }
-      else if (yIndices.some(index => isAdjacent(index, i))){
-        for (const old of yIndices) {
-          if (isAdjacent(old, i)) {
-            nextSquares[old] = null;
-            nextSquares[i] = "O"
-            break;
+      else if (yCount === 3){
+        if (selectedSquare === null) {
+          if (squares[i] === 'O') {
+            setSelectedSquare(i)
           }
+          return
         }
+
+        if (squares[i] !== null || !isAdjacent(selectedSquare, i)) {
+          setSelectedSquare(null)
+          return
+        }
+        nextSquares[selectedSquare] = null;
+        nextSquares[i] = 'O';
+        if (squares[4] === 'O' && selectedSquare !== 4 && calculateWinner(nextSquares) !== 'O') {
+          setSelectedSquare(null)
+          return
+        }
+
+        setSelectedSquare(null)
       }
       else {
         return;
