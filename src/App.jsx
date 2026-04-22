@@ -25,9 +25,45 @@ export default function Board() {
     }
     const nextSquares = squares.slice();
     if (xIsNext) {
-      nextSquares[i] = "X";
+      const xIndices = squares
+        .map((square, index) => square === 'X' ? index : null)
+        .filter(index => index !== null);
+      const xCount = xIndices.length;
+      if (xCount < 3) {
+        nextSquares[i] = "X";
+      }
+      else if (xIndices.some(index => isAdjacent(index, i))){
+        for (const old of xIndices) {
+          if (isAdjacent(old, i)) {
+            nextSquares[old] = null;
+            nextSquares[i] = "X"
+            break;
+          }
+        }
+      }
+      else {
+        return;
+      }
     } else {
-      nextSquares[i] = "O";
+      const yIndices = squares
+        .map((square, index) => square === 'O' ? index : null)
+        .filter(index => index !== null);
+      const yCount = yIndices.length;
+      if (yCount < 3) {
+        nextSquares[i] = "O";
+      }
+      else if (yIndices.some(index => isAdjacent(index, i))){
+        for (const old of yIndices) {
+          if (isAdjacent(old, i)) {
+            nextSquares[old] = null;
+            nextSquares[i] = "O"
+            break;
+          }
+        }
+      }
+      else {
+        return;
+      }
     }
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
@@ -61,6 +97,16 @@ export default function Board() {
       </div>
     </>
   );
+}
+
+function isAdjacent(i_1, i_2) {
+  const x_1 = Math.floor(i_1 / 3)
+  const y_1 = i_1 % 3
+
+  const x_2 = Math.floor(i_2 / 3)
+  const y_2 = i_2 % 3
+
+  return Math.abs(x_1 - x_2) <= 1 && Math.abs(y_1 - y_2) <= 1
 }
 
 function calculateWinner(squares) {
